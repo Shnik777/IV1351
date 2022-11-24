@@ -17,7 +17,7 @@ CREATE TABLE "student"
   
 );
 
-CREATE TABLE "pricing_discount"
+CREATE TABLE "sibling_discount"
 (
   "discount_id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "sibling_discount" int NOT NULL
@@ -71,6 +71,14 @@ CREATE TABLE "phone"
   "contact_id" int REFERENCES "contact_details"
   
 );
+
+CREATE TABLE "person_contact"
+ (
+   "contact_id" int NOT NULL REFERENCES "contact_details" ON DELETE CASCADE,
+   "person_id" int NOT NULL REFERENCES "person" ON DELETE CASCADE,
+   PRIMARY KEY("contact_id", "person_id")
+   
+ );
 
 CREATE TABLE "contact_person"
 (
