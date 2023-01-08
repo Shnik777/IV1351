@@ -9,7 +9,11 @@
 --with the condition to only show a specified year
 -----------------------------------------------
 SELECT EXTRACT(month from date_slot) AS month,
-COUNT(*) as TotalLessons from timeslot where extract(year from date_slot)='2023'
+COUNT(*) as TotalLessons from timeslot 
+full join group_lesson on group_lesson.timeslot_id=time_id
+full join ensemble on ensemble.timeslot_id=time_id
+full join private_lesson on private_lesson.timeslot_id=time_id
+where extract(year from date_slot)='2022'
 group by month;
 
 -------------------------------------------------------------------------------
@@ -66,20 +70,26 @@ SELECT* from sibling_counter;
 
 
 --------------------------------------------------------
---Set of queries to verify the amount of specific lesson a teacher
+--Set of queries to verify the amount of specific lessons a teacher has.
 --The person_id is joined with instructor id and the amount of lessons are grouped
 --by the instructors ssn.
 -------------------------------------------------------
 SELECT person.ssn, COUNT(private_lesson.private_id) as privateLesson from person
 inner join private_lesson on private_lesson.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022'
 GROUP BY person.ssn;
 -------------------------------------------------------
 SELECT person.ssn, COUNT(group_lesson.group_id) as Grouplesson from person
 inner join group_lesson on group_lesson.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022'
 GROUP BY person.ssn;
 ------------------------------------------------------------------
 SELECT person.ssn, COUNT(ensemble.ensemble_id) as Ensemble from person
 inner join ensemble on ensemble.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022'
 GROUP BY person.ssn;
 -----------------------------------------------------------------
 
@@ -92,19 +102,44 @@ VACUUM ANALYZE;
 EXPLAIN SELECT ssn, SUM(groupLessons) from (
 SELECT person.ssn, COUNT(group_lesson.group_id) as groupLessons from person
 inner join group_lesson on group_lesson.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022' -----Sets the year and month to be checked
 GROUP BY person.ssn
 union all
+
 SELECT person.ssn, COUNT(private_lesson.private_id) as PrivateLessons from person
 inner join private_lesson on private_lesson.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022' -----Sets the year and month to be checked
 GROUP BY person.ssn
 union all
+
 SELECT person.ssn, COUNT(ensemble.ensemble_id) as Ensemble from person
 inner join ensemble on ensemble.instructor_id = person.person_id
+inner join timeslot on timeslot_id = time_id
+where EXTRACT(month from date_slot) = '12' and extract(year from date_slot)='2022' -----Sets the year and month to be checked
 
 GROUP BY person.ssn) as hhheeee
 
 group by ssn
-having SUM(groupLessons) >6 --specifies the least amount of lessons shown
+having SUM(groupLessons) >1 --specifies the least amount of lessons shown
+ORDER BY SUM DESC	--Order by the amount of lessons in descending order
 ;
 ----------------------------------------------------------
 ----------------------------------------------------------
+SELECT genre, timeslot.time_slot, EXTRACT(day from date_slot) as day_of_the_week, 
+(CASE WHEN (COUNT(student_ensemble.ensemble_id)) = max_students
+	  THEN 'full'
+	  WHEN (max_students - (COUNT(student_ensemble.ensemble_id))) between 1 and 2
+	  THEN '1-2 spots'
+	  ELSE '3+'
+	  END)
+	  AS seats 
+
+ from ensemble
+ 
+inner join timeslot on timeslot_id=time_id
+inner join student_ensemble on student_ensemble.ensemble_id=ensemble.ensemble_id
+where date_slot between '2023-01-07' and '2023-01-14'
+GROUP BY timeslot.time_slot, ensemble.genre, timeslot.date_slot, max_students
+ORDER BY day_of_the_week ASC, genre ;

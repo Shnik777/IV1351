@@ -222,3 +222,39 @@ VALUES
 		((SELECT person_id from person WHERE ssn='9404207338'),(SELECT person_id from person WHERE ssn='9412241238'),1),
 		((SELECT person_id from person WHERE ssn='9412241238'),(SELECT person_id from person WHERE ssn='9404207338'),1);
 		
+INSERT INTO student_ensemble(student_id, ensemble_id)
+VALUES
+		((SELECT person_id from person WHERE ssn='9504131238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9505241996'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9508201828'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9504207338'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9512241238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9404131238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9405241996'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9408201828'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9404207338'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9412241238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-07' AND time_slot='17:00'));
+		
+INSERT INTO student_ensemble(student_id, ensemble_id)
+VALUES
+		((SELECT person_id from person WHERE ssn='9504131238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9505241996'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9508201828'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9504207338'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9512241238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9404131238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9405241996'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9408201828'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9404207338'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-10' AND time_slot='17:00'));
+
+INSERT INTO student_ensemble(student_id, ensemble_id)
+VALUES
+		((SELECT person_id from person WHERE ssn='9504131238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-13' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9505241996'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-13' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9508201828'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-13' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9504207338'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-13' AND time_slot='17:00')),
+		((SELECT person_id from person WHERE ssn='9512241238'), (SELECT ensemble_id from ensemble inner join timeslot on timeslot_id = time_id where date_slot='2023-01-13' AND time_slot='17:00'));
+
+INSERT INTO group_lesson(max_students, min_students, instrument_type, instructor_id, skill_pricing_id, timeslot_id)
+VALUES
+		(10, 2, 'bass', (SELECT person_id from person WHERE ssn='7404176834'), 'beginner', (SELECT time_id from timeslot WHERE time_slot='17:00' AND date_slot='2022-12-06'));		
