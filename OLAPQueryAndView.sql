@@ -126,6 +126,10 @@ having SUM(groupLessons) >1 --specifies the least amount of lessons shown
 ORDER BY SUM DESC	--Order by the amount of lessons in descending order
 ;
 ----------------------------------------------------------
+--Shows all ensembles for a specified week along with the number of available seats
+--The query counts the number of attending students and compares it with the maximum 
+--number of allowed students. The case statement separates the answer depending on
+--the number of available seats.
 ----------------------------------------------------------
 SELECT genre, timeslot.time_slot, EXTRACT(day from date_slot) as day_of_the_week, 
 (CASE WHEN (COUNT(student_ensemble.ensemble_id)) = max_students
@@ -140,6 +144,6 @@ SELECT genre, timeslot.time_slot, EXTRACT(day from date_slot) as day_of_the_week
  
 inner join timeslot on timeslot_id=time_id
 inner join student_ensemble on student_ensemble.ensemble_id=ensemble.ensemble_id
-where date_slot between '2023-01-07' and '2023-01-14'
+where date_slot between '2023-01-07' and '2023-01-14'	--Sets the week to be shown
 GROUP BY timeslot.time_slot, ensemble.genre, timeslot.date_slot, max_students
-ORDER BY day_of_the_week ASC, genre ;
+ORDER BY day_of_the_week ASC, genre ;		-- Orders it by the day of the week first and secondary ordering it with genre.
