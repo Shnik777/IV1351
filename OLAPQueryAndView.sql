@@ -50,7 +50,7 @@ where extract(year from date_slot)='2022' -----Sets the year and month to be che
 GROUP BY month) as hhheeee
 
 group by month
-ORDER BY SUM ASC	--Order by the amount of lessons in descending order
+ORDER BY month ASC	--Order by the amount of lessons in descending order
 ;
 -------------------------------------------------------------------------------------------------
 --Calculates the number of siblings each student have, will
