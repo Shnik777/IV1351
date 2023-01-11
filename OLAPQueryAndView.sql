@@ -3,19 +3,6 @@
 ------------QUERIES AND VIEWS FOR SEMINAR 3----------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
 
------------------------------------------------
---Extracts the month part from the date and count the 
---number of timeslots(total number of lessons)
---with the condition to only show a specified year
------------------------------------------------
-SELECT EXTRACT(month from date_slot) AS month,
-COUNT(*) as TotalLessons from timeslot 
-full join group_lesson on group_lesson.timeslot_id=time_id
-full join ensemble on ensemble.timeslot_id=time_id
-full join private_lesson on private_lesson.timeslot_id=time_id
-where extract(year from date_slot)='2022'
-group by month;
-
 -------------------------------------------------------------------------------
 --Extracts the month part from the date and counts the
 --number of lessons, inner join removes all lessons that
@@ -24,26 +11,51 @@ group by month;
 SELECT EXTRACT(month from date_slot) AS month,
 COUNT(group_id) as GroupLessons from timeslot 
 inner join group_lesson ON timeslot_id = time_id
-where extract(year from date_slot)='2022'
+where extract(year from date_slot)='2023'
 group by month;
 
 SELECT EXTRACT(month from date_slot) AS month,
 COUNT(ensemble_id) as Ensembles 
 from timeslot inner join ensemble ON timeslot_id = time_id
-where extract(year from date_slot)='2022'
+where extract(year from date_slot)='2023'
 group by month;
 
 SELECT EXTRACT(month from date_slot) AS month,
 COUNT(*) as PrivateLessons from (SELECT date_slot
 FROM timeslot
-inner join private_lesson on timeslot_id=time_id where extract(year from date_slot)='2022') as kkoooooo 
+inner join private_lesson on timeslot_id=time_id where extract(year from date_slot)='2023') as kkoooooo 
 group by month;
+----------------------------------------------------------------------------------------------------
+--takes the sum of the above queries to get the total number of lessons
+----------------------------------------------------------------------------------------------------
+SELECT month, SUM(groupLessons) from (
+SELECT EXTRACT(month from date_slot) as month, COUNT(group_lesson.group_id) as groupLessons from group_lesson
+inner join timeslot on timeslot_id = time_id
+where  extract(year from date_slot)='2022' -----Sets the year and month to be checked
+GROUP BY month
+union all
 
+SELECT EXTRACT(month from date_slot) as month, COUNT(private_lesson.private_id) as PrivateLessons from private_lesson
 
--------------------------------------------------------
+inner join timeslot on timeslot_id = time_id
+where extract(year from date_slot)='2022' -----Sets the year and month to be checked
+GROUP BY month
+union all
+
+SELECT EXTRACT(month from date_slot) as month, COUNT(ensemble.ensemble_id) as Ensemble from ensemble
+
+inner join timeslot on timeslot_id = time_id
+where extract(year from date_slot)='2022' -----Sets the year and month to be checked
+
+GROUP BY month) as hhheeee
+
+group by month
+ORDER BY SUM ASC	--Order by the amount of lessons in descending order
+;
+-------------------------------------------------------------------------------------------------
 --Calculates the number of siblings each student have, will
 --be used as subquery below
--------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 SELECT COUNT(sibling.sibling_id) as siblingsss 
 from student 
 full join sibling on student.student_id = sibling.person_id 
